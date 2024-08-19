@@ -258,3 +258,106 @@ with col1:
 		        resampling_import = "from imblearn.combine import SMOTETomek"
 		        resampling_instance = "smotetomek"
 		        resampling_class = "SMOTETomek()"
+				
+
+with col2:
+	
+        stats_expander = st.expander("**:blue[Instructions]**", expanded=True)
+        with stats_expander:
+			
+            st.write("1. Specify the variables on the side bar (*click on > if closed*)")
+            st.write("2. Copy the generated Python script to your clipboard")
+            st.write("3. Paste the generated Python script on your IDE of preference")
+            st.write("4. Run the Python script")
+			
+        st.subheader("Python Code:", divider='blue')
+		
+        st.code(
+
+	            "# Import libraries and dependencies" +"\n"+ 
+	            "import numpy as np" +"\n"+ 
+	            "import pandas as pd" +"\n\n"+
+
+	            "# ------------------------------ Data Set Loading ------------------------------" +"\n\n"+
+
+	            "# Read data set" +"\n"+
+	            "df = pd.read_" + data_source + "('" + path + "')" +"\n\n"+
+
+	            "# Visualize data set" +"\n"+
+	            "display(df.head())" +"\n\n"+ 
+
+	            "# ------------------------------- Data Cleaning --------------------------------" +"\n\n"+
+
+	            "# Remove null values" +"\n"+
+	            "df.dropna(inplace = True)" +"\n\n"+
+
+	            "# Specify the features columns" +"\n"+
+	            "X = df.drop(columns = [df.columns[-1]])" +"\n\n"+
+
+	            "# Specify the target column" +"\n"+
+	            "y = df.iloc[:,-1]" +"\n\n"+
+
+	            "# Transform non-numerical columns into binary-type columns" +"\n"+
+	            "X = pd.get_dummies(X)" +"\n\n"+
+
+	            "# ----------------------------- Data Preprocessing -----------------------------" +"\n\n"+
+
+	            "# Import train_test_split class" +"\n"+ 
+	            "from sklearn.model_selection import train_test_split" +"\n\n"+ 
+
+	            "# Divide data set into traning and testing subsets" +"\n"+ 
+	            "X_train, X_test, y_train, y_test = train_test_split(X, y, train_size = " + str(round(train_test_ratio/100,2)) + ")" +"\n\n"+
+
+	            "# Import data scaling technique class" +"\n"+ 
+	            scaling_technique_import +"\n\n"+
+
+	            "# Instantiate data scaler" +"\n"+ 
+	            "scaler = " + scaling_class +"\n\n"+ ""
+
+	            "# Fit the Scaler with the training data" +"\n"+ 
+	            "X_scaler = scaler.fit(X_train)" +"\n\n"+
+
+	            "# Scale the training and testing data" +"\n"+ 
+	            "X_train_scaled = X_scaler.transform(X_train)" +"\n"+ 
+	            "X_test_scaled = X_scaler.transform(X_test)" +"\n\n"+
+
+	            "# ------------------------------ Data Resampling ------------------------------" +"\n\n"+
+
+	            "# Import data resampling class" +"\n"+ 
+	            resampling_import +"\n\n"+
+
+	            "# Instantiate data resampler technique" +"\n"+ 
+	            resampling_instance + " = " + resampling_class +"\n\n"+
+
+	            "# Resample training sets" +"\n"+ 
+	            "X_resampled, y_resampled = " + resampling_instance + ".fit_resample(X_train_scaled, y_train)" +"\n\n"+
+
+	            "# ------------------------------- Model Building -------------------------------" +"\n\n"+ 
+
+	            "# Import machine learning model class" +"\n"+ 
+	            algorithm_import +"\n\n"+ 
+
+	            "# Instantiate machine learning model" +"\n"+ 
+	            algorithm_instance + " = " + algorithm_class +"\n\n"+
+
+	            "# Fit the machine learning model with the training data" +"\n"+
+	            algorithm_instance + '.fit(X_resampled, y_resampled)' +"\n\n"+
+
+	            "# Make predictions using the testing data" +"\n"+ 
+	            "y_pred = " + algorithm_instance + '.predict(X_test_scaled)' +"\n\n"+ 
+
+	            "# ------------------------------ Model Evaluation ------------------------------" +"\n\n"+
+
+	            "# Calculate balanced accuracy scrore" +"\n"+ 
+	            "from sklearn.metrics import balanced_accuracy_score" +"\n"+
+	            "print(balanced_accuracy_score(y_test, y_pred))" +"\n\n"+
+
+	            "# Display the confusion matrix" +"\n"+
+	            "from sklearn.metrics import confusion_matrix" +"\n"+
+	            "print(confusion_matrix(y_test, y_pred))" +"\n\n"+
+
+	            "# Display the imbalanced classification report" +"\n"+
+	            "from imblearn.metrics import classification_report_imbalanced" +"\n"+
+	            "print(classification_report_imbalanced(y_test, y_pred))"
+
+	            )
