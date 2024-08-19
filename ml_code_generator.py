@@ -61,4 +61,4 @@ with col1:
 
         path = st.text_input("Enter the input data file path here:", "Desktop/")
 		
-        algorithm = st.sidebar.selectbox("Select a machine learning algorithm:", ["AdaBoost", "Balanced Random Forest", "Decision Tree", "Easy Ensemble", "Gaussian Naïve Bayes","Gradient Boosting", "K-Nearest Neighbors", "Logistic Regression", "Random Forest",  "Stochastic Gradient Descent", "Support Vector"])
+        algorithm = st.selectbox("Select a machine learning algorithm:", ["AdaBoost", "Balanced Random Forest", "Decision Tree", "Easy Ensemble", "Gaussian Naïve Bayes","Gradient Boosting", "K-Nearest Neighbors", "Logistic Regression", "Random Forest",  "Stochastic Gradient Descent", "Support Vector"])
