@@ -47,3 +47,13 @@ st.info('**An easy-to-use, open-source application to generate python codes for 
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Main app
 #---------------------------------------------------------------------------------------------------------------------------------
+
+col1, col2 = st.columns((0.2,0.8))
+
+with col1:
+
+        data_source = st.sselectbox("Select the data source file extension:", [".csv file", ".xlsx file"])
+        if data_source == ".csv file":
+	        data_source = "csv"
+        else:
+	        data_source = "excel" 
