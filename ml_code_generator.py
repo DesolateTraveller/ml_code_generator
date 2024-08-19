@@ -52,7 +52,7 @@ col1, col2 = st.columns((0.2,0.8))
 
 with col1:
 
-        data_source = st.sselectbox("Select the data source file extension:", [".csv file", ".xlsx file"])
+        data_source = st.selectbox("Select the data source file extension:", [".csv file", ".xlsx file"])
         if data_source == ".csv file":
 	        data_source = "csv"
         else:
