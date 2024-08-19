@@ -57,8 +57,68 @@ with col1:
 	        data_source = "csv"
         else:
 	        data_source = "excel" 
-			
-
+		
+        #--------------------------------------------------------------------
+		
         path = st.text_input("Enter the input data file path here:", "Desktop/")
 		
+		#--------------------------------------------------------------------
+        
         algorithm = st.selectbox("Select a machine learning algorithm:", ["AdaBoost", "Balanced Random Forest", "Decision Tree", "Easy Ensemble", "Gaussian Naïve Bayes","Gradient Boosting", "K-Nearest Neighbors", "Logistic Regression", "Random Forest",  "Stochastic Gradient Descent", "Support Vector"])
+		
+        if algorithm == "AdaBoost":
+	        algorithm_import = "from sklearn.ensemble import AdaBoostClassifier"
+	        algorithm_instance = "abc"
+	        algorithm_class = "AdaBoostClassifier()"
+
+        elif algorithm == "Balanced Random Forest":
+	        algorithm_import = "from imblearn.ensemble import BalancedRandomForestClassifier"
+	        algorithm_instance = "brfc"
+	        algorithm_class = "BalancedRandomForestClassifier()"
+
+        elif algorithm == "Decision Tree":
+	        algorithm_import = "from sklearn import tree"
+	        algorithm_instance = "dt"
+	        algorithm_class = "tree.DecisionTreeClassifier()"
+
+        elif algorithm == "Easy Ensemble":
+	        algorithm_import = "from imblearn.ensemble import EasyEnsembleClassifier"
+	        algorithm_instance = "eec"
+	        algorithm_class = "EasyEnsembleClassifier()"
+
+        elif algorithm == "Gaussian Naïve Bayes":
+	        algorithm_import = "from sklearn.naive_bayes import GaussianNB"
+	        algorithm_instance = "gnb"
+	        algorithm_class = "GaussianNB()"
+
+        elif algorithm == "Gradient Boosting":
+	        algorithm_import = "from sklearn.ensemble import GradientBoostingClassifier"
+	        algorithm_instance = "gbc"
+	        algorithm_class = "GradientBoostingClassifier()"
+
+        elif algorithm == "K-Nearest Neighbors":
+	        algorithm_import = "from sklearn.neighbors import KNeighborsClassifier"
+	        algorithm_instance = "knn"
+	        algorithm_class = "KNeighborsClassifier()"
+
+        elif algorithm == "Logistic Regression":
+	        algorithm_import = "from sklearn.linear_model import LogisticRegression"
+	        algorithm_instance = "lr"
+	        algorithm_class = "LogisticRegression()"
+
+        elif algorithm == "Random Forest":
+	        algorithm_import = "from sklearn.ensemble import RandomForestClassifier"
+	        algorithm_instance = "rfc"
+	        algorithm_class = "RandomForestClassifier()"
+
+        elif algorithm == "Support Vector":
+	        algorithm_import = "from sklearn.svm import SVC"
+	        algorithm_instance = "svm"
+	        algorithm_class = "SVC()"
+
+        elif algorithm == "Stochastic Gradient Descent":
+	        algorithm_import = "from sklearn.linear_model import SGDClassifier"
+	        algorithm_instance = "sgdc"
+	        algorithm_class = "SGDClassifier()"
+			
+		#--------------------------------------------------------------------
