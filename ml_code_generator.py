@@ -52,7 +52,8 @@ col1, col2 = st.columns((0.2,0.8))
 
 with col1:
 
-        data_source = st.selectbox("Select the data source file extension:", [".csv file", ".xlsx file"])
+        st.subheader("Parameters", divider='blue')
+        data_source = st.selectbox("**Select the file extension**", [".csv file", ".xlsx file"])
         if data_source == ".csv file":
 	        data_source = "csv"
         else:
@@ -60,11 +61,12 @@ with col1:
 		
         #--------------------------------------------------------------------
 		
-        path = st.text_input("Enter the input data file path here:", "Desktop/")
+        path = st.text_input("**Enter the input file path here**", "Desktop/")
 		
 		#--------------------------------------------------------------------
         
-        algorithm = st.selectbox("Select a machine learning algorithm:", ["AdaBoost", "Balanced Random Forest", "Decision Tree", "Easy Ensemble", "Gaussian Naïve Bayes","Gradient Boosting", "K-Nearest Neighbors", "Logistic Regression", "Random Forest",  "Stochastic Gradient Descent", "Support Vector"])
+        st.divider()
+        algorithm = st.selectbox("**Select a machine learning algorithm**", ["AdaBoost", "Balanced Random Forest", "Decision Tree", "Easy Ensemble", "Gaussian Naïve Bayes","Gradient Boosting", "K-Nearest Neighbors", "Logistic Regression", "Random Forest",  "Stochastic Gradient Descent", "Support Vector"])
 		
         if algorithm == "AdaBoost":
 	        algorithm_import = "from sklearn.ensemble import AdaBoostClassifier"
@@ -123,11 +125,12 @@ with col1:
 			
 		#--------------------------------------------------------------------
 		
-        train_test_ratio = st.number_input("Enter the percentage of the training set:", 0, max_value = 99, value = 70)
+        train_test_ratio = st.number_input("**Enter the percentage of the training set**", 0, max_value = 99, value = 70)
 		
         #--------------------------------------------------------------------
 		
-        scaling = st.selectbox("Select a machine learning algorithm:",["Max Abs Scaler", "Min Max Scaler", "min max scale", "Normalizer", "Power Transformer", "Quantile Transformer", "Robust Scaler", "Standard Scaler"])
+        st.divider()
+        scaling = st.selectbox("**Select a scalling algorithm**",["Max Abs Scaler", "Min Max Scaler", "min max scale", "Normalizer", "Power Transformer", "Quantile Transformer", "Robust Scaler", "Standard Scaler"])
 
         if scaling == "Standard Scaler":
 	        scaling_technique_import = "from sklearn.preprocessing import StandardScaler"
@@ -163,10 +166,10 @@ with col1:
 			
         #--------------------------------------------------------------------
 		
-        under_or_over = st.selectbox("Select a resampling technique:", ["Oversampling", "Undersampling", "Combination"])
+        under_or_over = st.selectbox("**Select a resampling technique**", ["Oversampling", "Undersampling", "Combination"])
 
         if under_or_over == "Oversampling":
-	        resampling = st.selectbox("Select an oversampling technique:", ["ADASYN", "Borderline SMOTE", "Random Over Sampler","SMOTE", "SMOTEN", "SMOTENC"])
+	        resampling = st.selectbox("**Select an oversampling technique**", ["ADASYN", "Borderline SMOTE", "Random Over Sampler","SMOTE", "SMOTEN", "SMOTENC"])
 
 	        if resampling == "ADASYN":
 		        resampling_import = "from imblearn.over_sampling import ADASYN"
@@ -199,7 +202,7 @@ with col1:
 		        resampling_class = "SMOTENC()"
 
         elif under_or_over == "Undersampling":
-	        resampling = st.selectbox("Select an undersampling technique:", ["All KNN" , "Cluster Centroids", "Condensed Nearest Neighbour", "Edited Nearest Neighbours", "Near Miss", "Neighbourhood Cleaning Rule", "One Sided Selection", "Random Under Sampler", "Repeated Edited Nearest Neighbours"])
+	        resampling = st.selectbox("**Select an undersampling technique**", ["All KNN" , "Cluster Centroids", "Condensed Nearest Neighbour", "Edited Nearest Neighbours", "Near Miss", "Neighbourhood Cleaning Rule", "One Sided Selection", "Random Under Sampler", "Repeated Edited Nearest Neighbours"])
 
 	        if resampling == "All KNN":
 		        resampling_import = "from imblearn.under_sampling import AllKNN"
@@ -246,8 +249,8 @@ with col1:
 		        resampling_instance = "renn"
 		        resampling_class = "RepeatedEditedNearestNeighbours()"
 
-        else:
-	        resampling = st.sidebar.selectbox("Select a resampling technique",["SMOTEENN", "SMOTE Tomek"])
+        elif under_or_over == "Combination":
+	        resampling = st.selectbox("**Select a cmbination technique**",["SMOTEENN", "SMOTE Tomek"])
 
 	        if resampling == "SMOTEENN":
 		        resampling_import = "from imblearn.combine import SMOTEENN"
@@ -262,15 +265,14 @@ with col1:
 
 with col2:
 	
-        stats_expander = st.expander("**:blue[Instructions]**", expanded=True)
+        st.subheader("Code:", divider='blue')
+        stats_expander = st.expander("**:blue[Instructions]**", expanded=False)
         with stats_expander:
 			
             st.write("1. Specify the variables on the side bar (*click on > if closed*)")
             st.write("2. Copy the generated Python script to your clipboard")
             st.write("3. Paste the generated Python script on your IDE of preference")
             st.write("4. Run the Python script")
-			
-        st.subheader("Python Code:", divider='blue')
 		
         st.code(
 
