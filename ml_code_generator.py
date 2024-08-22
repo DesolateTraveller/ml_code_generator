@@ -42,7 +42,7 @@ st.info('**An easy-to-use, open-source application to generate python codes for 
 stats_expander = st.expander("**:blue[Instructions]**", expanded=False)
 with stats_expander:
 			
-    st.write("1. Specify the variables on the side bar (*click on > if closed*)")
+    st.write("1. Specify the variables on the side bar")
     st.write("2. Copy the generated Python script to your clipboard")
     st.write("3. Paste the generated Python script on your IDE of preference")
     st.write("4. Run the Python script")
