@@ -30,15 +30,17 @@ if not st.session_state.logged_in:
     if submit_button:
         if check_login(username, password):
             st.session_state.logged_in = True
+            st.session_state.username = username
             st.success("Login successful!")
-            st.experimental_rerun()
         else:
             st.error("Invalid username or password")
-else:
+
+if st.session_state.logged_in:
     # Your main app content goes here
     st.title("Welcome to PDF Playground")
     st.write("You're logged in as:", st.session_state.username)
 
     if st.button("Logout"):
         st.session_state.logged_in = False
-        st.experimental_rerun()
+        st.session_state.username = None
+        st.experimental_set_query_params(logged_in="false")
