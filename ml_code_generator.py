@@ -5,19 +5,21 @@ def validate_login(user_id, password):
     # Replace with your actual validation logic
     valid_user_id = "admin"
     valid_password = "password123"
+
     return user_id == valid_user_id and password == valid_password
 
-# Function to display the login page
-def login_page():
-    st.title("Login to Access the App")
-    
-    # Create two columns: one for the app details, the other for the login form
+# Function to handle login
+def login():
+    st.title("Login to PDF Playground")
+
+    # Create two columns for the login page
     col1, col2 = st.columns([2, 1])
 
     with col1:
         st.markdown("""
-            <h2>Welcome to the App</h2>
-            <p>This app requires login to access the content. Please enter your credentials to proceed.</p>
+            <h2>Welcome to PDF Playground</h2>
+            <p>An easy-to-use, open-source PDF application to preview and extract content and metadata from PDFs, add or remove passwords, modify, merge, convert, and compress PDFs.</p>
+            <p><i>Created by Avijit Chakraborty</i></p>
         """, unsafe_allow_html=True)
 
     with col2:
@@ -29,7 +31,7 @@ def login_page():
         if st.button("Login"):
             if validate_login(user_id, password):
                 st.session_state.logged_in = True
-                st.experimental_rerun()
+                st.experimental_rerun()  # Refresh the app to move to the main page
             else:
                 st.error("Invalid User ID or Password")
 
