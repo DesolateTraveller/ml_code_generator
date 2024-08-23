@@ -164,9 +164,6 @@ with col1:
             algorithm_instance = "svr"
             algorithm_class = "SVR()"
             
-	elif task_type == "Clustering":
-        	algorithm = st.selectbox("**Select an algorithm**", ["KMeans", "DBSCAN"])
-
 	#--------------------------------------------------------------------
     
     train_test_ratio = st.number_input("**Enter the percentage of the training set**", 0, max_value=99, value=70)
