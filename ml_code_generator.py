@@ -69,7 +69,7 @@ with col1:
     task_type = st.selectbox("**Select the type of task**", ["Classification", "Regression"])
 
     if task_type == "Classification":
-        algorithm = st.selectbox("**Select a machine learning algorithm**", ["AdaBoost", "Balanced Random Forest", "Decision Tree", "Easy Ensemble", "Gaussian Naïve Bayes", "Gradient Boosting", "K-Nearest Neighbors", "Logistic Regression", "Random Forest",  "Stochastic Gradient Descent", "Support Vector"])
+        algorithm = st.selectbox("**Select an algorithm**", ["AdaBoost", "Balanced Random Forest", "Decision Tree", "Easy Ensemble", "Gaussian Naïve Bayes", "Gradient Boosting", "K-Nearest Neighbors", "Logistic Regression", "Random Forest",  "Stochastic Gradient Descent", "Support Vector"])
 
         if algorithm == "AdaBoost":
             algorithm_import = "from sklearn.ensemble import AdaBoostClassifier"
@@ -201,6 +201,16 @@ with col1:
         scaling_technique_import = "from sklearn.preprocessing import PowerTransformer"
         scaling_class = "PowerTransformer()"
 
+    #--------------------------------------------------------------------
+    st.divider()    
+    feature_selection = st.selectbox("**Select a feature selection technique**", ["None", "SelectKBest", "Recursive Feature Elimination", "Feature Importance", "PCA"])
+
+    #--------------------------------------------------------------------
+    include_cv = st.checkbox("**Include Cross-Validation**", value=True)
+    include_hp = st.checkbox("**Include Hyperparameter Tuning**", value=True)
+    
+    #--------------------------------------------------------------------
+    
 with col2:
     st.subheader("Code:", divider='blue')
 
@@ -231,15 +241,60 @@ with col2:
         "# Transform non-numerical columns into binary-type columns\n"
         "X = pd.get_dummies(X)\n\n"
 
-        "# ----------------------------- Data Preprocessing -----------------------------\n\n"
+        "# ----------------------------- Handling Outliers -----------------------------\n\n"
 
-        "# Import train_test_split class\n"
-        "from sklearn.model_selection import train_test_split\n\n"
+        "# Remove outliers using Interquartile Range (IQR) method\n"
+        "Q1 = X.quantile(0.25)\n"
+        "Q3 = X.quantile(0.75)\n"
+        "IQR = Q3 - Q1\n"
+        "X = X[~((X < (Q1 - 1.5 * IQR)) | (X > (Q3 + 1.5 * IQR))).any(axis=1)]\n\n"
 
-        "# Divide data set into training and testing subsets\n"
-        f"X_train, X_test, y_train, y_test = train_test_split(X, y, train_size={str(round(train_test_ratio / 100, 2))})\n\n"
+        "# --------------------------- Feature Selection -----------------------------\n\n"
     )
 
+    # Handle feature selection methods
+    if feature_selection == "SelectKBest":
+        code += (
+            "# Select important features using SelectKBest\n"
+            "from sklearn.feature_selection import SelectKBest, f_classif, f_regression\n"
+            f"X = SelectKBest(score_func={'f_classif' if task_type == 'Classification' else 'f_regression'}, k='all').fit_transform(X, y)\n\n"
+        )
+    
+    elif feature_selection == "Recursive Feature Elimination":
+        code += (
+            "# Perform Recursive Feature Elimination\n"
+            "from sklearn.feature_selection import RFE\n"
+            f"rfe = RFE(estimator={algorithm_class}, n_features_to_select=5)\n"
+            "X = rfe.fit_transform(X, y)\n\n"
+        )
+
+    elif feature_selection == "Feature Importance":
+        code += (
+            "# Select important features using feature importances\n"
+            f"{algorithm_instance}.fit(X, y)\n"
+            "importances = pd.Series({algorithm_instance}.feature_importances_, index=X.columns)\n"
+            "print('Feature Importances:')\n"
+            "print(importances.sort_values(ascending=False))\n\n"
+        )
+    
+    elif feature_selection == "PCA":
+        code += (
+            "# Perform Principal Component Analysis (PCA)\n"
+            "from sklearn.decomposition import PCA\n"
+            "pca = PCA(n_components=5)\n"
+            "X = pca.fit_transform(X)\n\n"
+        )
+
+    # Train-Test Split
+    code += (
+        "# ------------------------- Train-Test Split -----------------------------\n\n"
+
+        "# Split data into training and testing sets\n"
+        "from sklearn.model_selection import train_test_split\n"
+        f"X_train, X_test, y_train, y_test = train_test_split(X, y, test_size={(100 - train_test_ratio) / 100}, random_state=42)\n\n"
+    )
+
+    # Resampling methods
     if resampling_method != "None":
         if resampling_method == "Random Oversampler":
             code += (
@@ -286,13 +341,42 @@ with col2:
                 "X_train, y_train = tl.fit_resample(X_train, y_train)\n\n"
             )
 
+    # Scaling
     code += (
         "# Scale data\n"
         f"{scaling_technique_import}\n"
         f"scaler = {scaling_class}\n"
         "X_train = scaler.fit_transform(X_train)\n"
         "X_test = scaler.transform(X_test)\n\n"
+    )
 
+    # Cross-Validation
+    if include_cv:
+        code += (
+            "# -------------------------- Cross-Validation ---------------------------\n\n"
+
+            "# Perform cross-validation\n"
+            "from sklearn.model_selection import cross_val_score\n"
+            f"scores = cross_val_score({algorithm_class}, X_train, y_train, cv=5)\n"
+            "print(f'Cross-Validation Scores: {scores}')\n"
+            "print(f'Mean Cross-Validation Score: {scores.mean()}')\n\n"
+        )
+
+    # Hyperparameter Tuning
+    if include_hp:
+        code += (
+            "# ------------------------- Hyperparameter Tuning -------------------------\n\n"
+
+            "# Perform Grid Search for Hyperparameter Tuning\n"
+            "from sklearn.model_selection import GridSearchCV\n"
+            f"param_grid = {{ 'n_estimators': [50, 100, 200], 'max_depth': [None, 10, 20, 30] }}\n"
+            f"grid_search = GridSearchCV(estimator={algorithm_class}, param_grid=param_grid, cv=5, n_jobs=-1)\n"
+            "grid_search.fit(X_train, y_train)\n"
+            "print(f'Best Hyperparameters: {grid_search.best_params_}')\n\n"
+        )
+
+    # Model Development
+    code += (
         "# ----------------------------- Model Development ------------------------------\n\n"
 
         "# Import model classes\n"
@@ -305,6 +389,7 @@ with col2:
         f"{algorithm_instance}.fit(X_train, y_train)\n\n"
     )
 
+    # Model Evaluation
     if task_type == "Classification":
         code += (
             "# Generate predictions on testing data\n"
@@ -315,7 +400,7 @@ with col2:
             "# Generate classification report and confusion matrix\n"
             "from sklearn.metrics import classification_report, confusion_matrix\n"
             "print(confusion_matrix(y_test, y_pred))\n"
-            "print(classification_report(y_test, y_pred))\n"
+            "print(classification_report(y_test, y_pred))\n\n"
         )
 
     elif task_type == "Regression":
@@ -328,7 +413,18 @@ with col2:
             "# Evaluate model performance using R2 score and Mean Squared Error\n"
             "from sklearn.metrics import r2_score, mean_squared_error\n"
             "print(f'R2 Score: {r2_score(y_test, y_pred)}')\n"
-            "print(f'Mean Squared Error: {mean_squared_error(y_test, y_pred)}')\n"
+            "print(f'Mean Squared Error: {mean_squared_error(y_test, y_pred)}')\n\n"
         )
+
+    # Feature Importance using SHAP
+    code += (
+        "# ----------------------------- Feature Importance -------------------------------\n\n"
+
+        "# Compute feature importances using SHAP\n"
+        "import shap\n"
+        f"explainer = shap.TreeExplainer({algorithm_instance})\n"
+        "shap_values = explainer.shap_values(X_test)\n"
+        "shap.summary_plot(shap_values, X_test, feature_names=X.columns)\n\n"
+    )
 
     st.code(code, language='python')
