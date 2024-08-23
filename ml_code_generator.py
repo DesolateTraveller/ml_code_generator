@@ -66,7 +66,7 @@ with col1:
     #--------------------------------------------------------------------
         
     st.divider()
-    task_type = st.selectbox("**Select the type of task**", ["Classification", "Regression", "Clustering"])
+    task_type = st.selectbox("**Select the type of task**", ["Classification", "Regression"])
 
     if task_type == "Classification":
         algorithm = st.selectbox("**Select an algorithm**", ["AdaBoost", "Balanced Random Forest", "Decision Tree", "Easy Ensemble", "Gaussian Naïve Bayes", "Gradient Boosting", "K-Nearest Neighbors", "Logistic Regression", "Random Forest",  "Stochastic Gradient Descent", "Support Vector"])
