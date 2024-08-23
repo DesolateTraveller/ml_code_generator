@@ -126,7 +126,7 @@ with col1:
             algorithm_instance = "sgdc"
             algorithm_class = "SGDClassifier()"
 
-    elif task_type == "Regression":
+    if task_type == "Regression":
         algorithm = st.selectbox("**Select a machine learning algorithm**", ["Linear Regression", "Ridge", "Lasso", "Elastic Net", "Random Forest Regressor", "Gradient Boosting Regressor", "Support Vector Regressor"])
 
         if algorithm == "Linear Regression":
@@ -165,7 +165,7 @@ with col1:
             algorithm_class = "SVR()"
             
 	elif task_type == "Clustering":
-        algorithm = st.selectbox("**Select an algorithm**", ["KMeans", "DBSCAN"])
+        	algorithm = st.selectbox("**Select an algorithm**", ["KMeans", "DBSCAN"])
 
 	#--------------------------------------------------------------------
     
