@@ -66,7 +66,7 @@ with col1:
     #--------------------------------------------------------------------
         
     st.divider()
-    task_type = st.selectbox("**Select the type of task**", ["Classification", "Regression"])
+    task_type = st.selectbox("**Select the type of task**", ["Classification", "Regression", "Clustering"])
 
     if task_type == "Classification":
         algorithm = st.selectbox("**Select an algorithm**", ["AdaBoost", "Balanced Random Forest", "Decision Tree", "Easy Ensemble", "Gaussian Naïve Bayes", "Gradient Boosting", "K-Nearest Neighbors", "Logistic Regression", "Random Forest",  "Stochastic Gradient Descent", "Support Vector"])
@@ -163,6 +163,10 @@ with col1:
             algorithm_import = "from sklearn.svm import SVR"
             algorithm_instance = "svr"
             algorithm_class = "SVR()"
+            
+	elif task_type == "Clustering":
+        algorithm = st.selectbox("**Select an algorithm**", ["KMeans", "DBSCAN"])
+
 	#--------------------------------------------------------------------
     
     train_test_ratio = st.number_input("**Enter the percentage of the training set**", 0, max_value=99, value=70)
