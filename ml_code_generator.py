@@ -1,12 +1,33 @@
+#---------------------------------------------------------------------------------------------------------------------------------
+### Authenticator
+#---------------------------------------------------------------------------------------------------------------------------------
 import streamlit as st
-
-# Set page configuration
+#---------------------------------------------------------------------------------------------------------------------------------
+### Import Libraries
+#---------------------------------------------------------------------------------------------------------------------------------
+#----------------------------------------
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+#----------------------------------------
+import os
+import sys
+import io
+import base64
+import traceback
+from PIL import Image
+#----------------------------------------
+from io import BytesIO
+#----------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------------
+### Title and description for your Streamlit app
+#---------------------------------------------------------------------------------------------------------------------------------
 st.set_page_config(page_title="ML Code Generator | v0.1",
                    layout="wide",
                    page_icon="💻",            
                    initial_sidebar_state="collapsed")
-
-# Title and description
+#---------------------------------------
 st.title(f""":rainbow[ML Code Generator]""")
 st.markdown(
     '''
@@ -15,16 +36,19 @@ st.markdown(
     ''',
     unsafe_allow_html=True)
 st.info('**An easy-to-use, open-source application to generate python codes for machine learning algorithms**', icon="ℹ️")
-
-# Instructions
+#---------------------------------------
 stats_expander = st.expander("**:blue[Instructions]**", expanded=False)
 with stats_expander:
     st.write("1. Specify the variables in the parameters columns on the side bar")
     st.write("2. Copy the generated Python script to your clipboard")
     st.write("3. Paste the generated Python script on your IDE of preference")
     st.write("4. Run the Python script")
-
-# Main app
+#---------------------------------------------------------------------------------------------------------------------------------
+### Functions & Definitions
+#---------------------------------------------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------------------------------------------
+### Main app
+#---------------------------------------------------------------------------------------------------------------------------------
 col1, col2 = st.columns((0.2, 0.8))
 
 with col1:
@@ -34,10 +58,14 @@ with col1:
         data_source = "csv"
     else:
         data_source = "excel"
-
+        
+	#--------------------------------------------------------------------
+    
     path = st.text_input("**Enter the input file path here**", "Desktop/")
 
-    # Dropdown to select between classification and regression
+    #--------------------------------------------------------------------
+        
+    st.divider()
     task_type = st.selectbox("**Select the type of task**", ["Classification", "Regression"])
 
     if task_type == "Classification":
@@ -135,13 +163,14 @@ with col1:
             algorithm_import = "from sklearn.svm import SVR"
             algorithm_instance = "svr"
             algorithm_class = "SVR()"
-
+	#--------------------------------------------------------------------
+    
     train_test_ratio = st.number_input("**Enter the percentage of the training set**", 0, max_value=99, value=70)
 
-    # Dropdown to select resampling method
+    #--------------------------------------------------------------------
+    st.divider()
     resampling_method = st.selectbox("**Select a resampling method**", ["None", "Random Oversampler", "SMOTE", "ADASYN", "Random Undersampler", "Tomek Links"])
 
-    st.divider()
     scaling = st.selectbox("**Select a scaling algorithm**", ["Max Abs Scaler", "Min Max Scaler", "Normalizer", "Power Transformer", "Quantile Transformer", "Robust Scaler", "Standard Scaler"])
 
     if scaling == "Standard Scaler":
