@@ -23,197 +23,261 @@ from io import BytesIO
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Title and description for your Streamlit app
 #---------------------------------------------------------------------------------------------------------------------------------
-st.set_page_config(page_title="ML Code Generator | v0.1",
+st.set_page_config(page_title="ML Code Generator | v0.2",
                    layout="wide",
                    page_icon="💻",            
                    initial_sidebar_state="collapsed")
 #---------------------------------------
-st.title(f""":rainbow[ML Code Generator]""")
 st.markdown(
-    '''
-    Created by | <a href="mailto:avijit.mba18@gmail.com">Avijit Chakraborty</a> ( 📑 [Resume](https://resume-avijitc.streamlit.app/) | :bust_in_silhouette: [LinkedIn](https://www.linkedin.com/in/avijit2403/) | :computer: [GitHub](https://github.com/DesolateTraveller) ) |
-    for best view of the app, please **zoom-out** the browser to **75%**.
-    ''',
-    unsafe_allow_html=True)
-st.info('**An easy-to-use, open-source application to generate python codes for machine learning algorithms**', icon="ℹ️")
+    """
+    <style>
+    .title-large {
+        text-align: center;
+        font-size: 35px;
+        font-weight: bold;
+        background: linear-gradient(to left, red, orange, blue, indigo, violet);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .title-small {
+        text-align: center;
+        font-size: 20px;
+        background: linear-gradient(to left, red, orange, blue, indigo, violet);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    </style>
+    <div class="title-large">Machine Learning (ML) Code Generator</div>
+    <div class="title-small">Play with Code | v0.2</div>
+    """,
+    unsafe_allow_html=True
+)
 #---------------------------------------
-stats_expander = st.expander("**:blue[Instructions]**", expanded=False)
-with stats_expander:
-    st.write("1. Specify the variables in the parameters columns on the side bar.")
-    st.write("2. Copy the generated Python script to your clipboard.")
-    st.write("3. Paste the generated Python script on your IDE of preference and check the whole code to make changes if necessary.")
-    st.write("4. Run the Python script.")
+st.markdown(
+    """
+    <style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #F0F2F6;
+        text-align: center;
+        padding: 10px;
+        font-size: 14px;
+        color: #333;
+        z-index: 100;
+    }
+    .footer p {
+        margin: 0;
+    }
+    .footer .highlight {
+        font-weight: bold;
+        color: blue;
+    }
+    </style>
+
+    <div class="footer">
+        <p>© 2025 | Created by : <span class="highlight">Avijit Chakraborty</span> | <a href="mailto:avijit.mba18@gmail.com"> 📩 </a></p>  <span class="highlight">Thank you for visiting the app | Unauthorized uses or copying is strictly prohibited | For best view of the app, please zoom out the browser to 75%.</span>
+    </div>
+    """,
+    unsafe_allow_html=True)
+  
+#---------------------------------------
+st.markdown(
+            """
+            <style>
+                .centered-info {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: bold;
+                font-size: 15px;
+                color: #007BFF; 
+                padding: 5px;
+                background-color: #E8F4FF; 
+                border-radius: 5px;
+                border: 1px solid #007BFF;
+                margin-top: 5px;
+                margin-bottom : 5px;
+                }
+            </style>
+            """,unsafe_allow_html=True,)
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Functions & Definitions
 #---------------------------------------------------------------------------------------------------------------------------------
+st.markdown('<div class="centered-info"><span style="margin-left: 10px;">An easy-to-use, open-source application to generate python codes for machine learning algorithms</span></div>',unsafe_allow_html=True,)
+with st.popover("**:red[How to Navigate the App]**", disabled=False, use_container_width=True): 
+    st.info("""
+        
+        - 1. Specify the variables in the parameters columns on the side bar.
+        - 2. Copy the generated Python script to your clipboard.
+        - 3. Paste the generated Python script on your IDE of preference and check the whole code to make changes if necessary.
+        - 4. Run the Python script.
+    """)
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Main app
 #---------------------------------------------------------------------------------------------------------------------------------
 col1, col2 = st.columns((0.2, 0.8))
-
 with col1:
-    st.subheader("Parameters", divider='blue')
-    data_source = st.selectbox("**Select the file extension**", [".csv file", ".xlsx file"])
-    if data_source == ".csv file":
-        data_source = "csv"
-    else:
-        data_source = "excel"
-        
-	#--------------------------------------------------------------------
     
-    path = st.text_input("**Enter the input file path here**", "Desktop/")
-
+    st.markdown('<div class="centered-info"><span style="margin-left: 10px;">Parameters</span></div>',unsafe_allow_html=True,)
     #--------------------------------------------------------------------
-        
-    st.divider()
-    task_type = st.selectbox("**Select the type of task**", ["Classification", "Regression"])
-
-    if task_type == "Classification":
-        algorithm = st.selectbox("**Select an algorithm**", ["AdaBoost", "Balanced Random Forest", "Decision Tree", "Easy Ensemble", "Gaussian Naïve Bayes", "Gradient Boosting", "K-Nearest Neighbors", "Logistic Regression", "Random Forest",  "Stochastic Gradient Descent", "Support Vector"])
-
-        if algorithm == "AdaBoost":
-            algorithm_import = "from sklearn.ensemble import AdaBoostClassifier"
-            algorithm_instance = "abc"
-            algorithm_class = "AdaBoostClassifier()"
-
-        elif algorithm == "Balanced Random Forest":
-            algorithm_import = "from imblearn.ensemble import BalancedRandomForestClassifier"
-            algorithm_instance = "brfc"
-            algorithm_class = "BalancedRandomForestClassifier()"
-
-        elif algorithm == "Decision Tree":
-            algorithm_import = "from sklearn import tree"
-            algorithm_instance = "dt"
-            algorithm_class = "tree.DecisionTreeClassifier()"
-
-        elif algorithm == "Easy Ensemble":
-            algorithm_import = "from imblearn.ensemble import EasyEnsembleClassifier"
-            algorithm_instance = "eec"
-            algorithm_class = "EasyEnsembleClassifier()"
-
-        elif algorithm == "Gaussian Naïve Bayes":
-            algorithm_import = "from sklearn.naive_bayes import GaussianNB"
-            algorithm_instance = "gnb"
-            algorithm_class = "GaussianNB()"
-
-        elif algorithm == "Gradient Boosting":
-            algorithm_import = "from sklearn.ensemble import GradientBoostingClassifier"
-            algorithm_instance = "gbc"
-            algorithm_class = "GradientBoostingClassifier()"
-
-        elif algorithm == "K-Nearest Neighbors":
-            algorithm_import = "from sklearn.neighbors import KNeighborsClassifier"
-            algorithm_instance = "knn"
-            algorithm_class = "KNeighborsClassifier()"
-
-        elif algorithm == "Logistic Regression":
-            algorithm_import = "from sklearn.linear_model import LogisticRegression"
-            algorithm_instance = "lr"
-            algorithm_class = "LogisticRegression()"
-
-        elif algorithm == "Random Forest":
-            algorithm_import = "from sklearn.ensemble import RandomForestClassifier"
-            algorithm_instance = "rfc"
-            algorithm_class = "RandomForestClassifier()"
-
-        elif algorithm == "Support Vector":
-            algorithm_import = "from sklearn.svm import SVC"
-            algorithm_instance = "svm"
-            algorithm_class = "SVC()"
-
-        elif algorithm == "Stochastic Gradient Descent":
-            algorithm_import = "from sklearn.linear_model import SGDClassifier"
-            algorithm_instance = "sgdc"
-            algorithm_class = "SGDClassifier()"
-
-    if task_type == "Regression":
-        algorithm = st.selectbox("**Select a machine learning algorithm**", ["Linear Regression", "Ridge", "Lasso", "Elastic Net", "Random Forest Regressor", "Gradient Boosting Regressor", "Support Vector Regressor"])
-
-        if algorithm == "Linear Regression":
-            algorithm_import = "from sklearn.linear_model import LinearRegression"
-            algorithm_instance = "lr"
-            algorithm_class = "LinearRegression()"
-
-        elif algorithm == "Ridge":
-            algorithm_import = "from sklearn.linear_model import Ridge"
-            algorithm_instance = "ridge"
-            algorithm_class = "Ridge()"
-
-        elif algorithm == "Lasso":
-            algorithm_import = "from sklearn.linear_model import Lasso"
-            algorithm_instance = "lasso"
-            algorithm_class = "Lasso()"
-
-        elif algorithm == "Elastic Net":
-            algorithm_import = "from sklearn.linear_model import ElasticNet"
-            algorithm_instance = "en"
-            algorithm_class = "ElasticNet()"
-
-        elif algorithm == "Random Forest Regressor":
-            algorithm_import = "from sklearn.ensemble import RandomForestRegressor"
-            algorithm_instance = "rfr"
-            algorithm_class = "RandomForestRegressor()"
-
-        elif algorithm == "Gradient Boosting Regressor":
-            algorithm_import = "from sklearn.ensemble import GradientBoostingRegressor"
-            algorithm_instance = "gbr"
-            algorithm_class = "GradientBoostingRegressor()"
-
-        elif algorithm == "Support Vector Regressor":
-            algorithm_import = "from sklearn.svm import SVR"
-            algorithm_instance = "svr"
-            algorithm_class = "SVR()"
-            
-	#--------------------------------------------------------------------
+    with st.container(border=True):
     
-    train_test_ratio = st.number_input("**Enter the percentage of the training set**", 0, max_value=99, value=70)
-
+        data_source = st.selectbox("**:blue[Select the file extension]**", [".csv file", ".xlsx file"])
+        if data_source == ".csv file":
+            data_source = "csv"
+        else:
+            data_source = "excel"
+        path = st.text_input("**:blue[Enter the input file path here]**", "Desktop/")
     #--------------------------------------------------------------------
-    st.divider()
-    resampling_method = st.selectbox("**Select a resampling method**", ["None", "Random Oversampler", "SMOTE", "ADASYN", "Random Undersampler", "Tomek Links"])
+    with st.container(border=True):
+    
+        task_type = st.selectbox("**:blue[Type of task]**", ["Classification", "Regression"])
 
-    scaling = st.selectbox("**Select a scaling algorithm**", ["Max Abs Scaler", "Min Max Scaler", "Normalizer", "Power Transformer", "Quantile Transformer", "Robust Scaler", "Standard Scaler"])
+        if task_type == "Classification":
+            algorithm = st.selectbox("**:blue[Select an algorithm]**", ["AdaBoost", "Balanced Random Forest", "Decision Tree", "Easy Ensemble", "Gaussian Naïve Bayes", "Gradient Boosting", "K-Nearest Neighbors", "Logistic Regression", "Random Forest",  "Stochastic Gradient Descent", "Support Vector"])
 
-    if scaling == "Standard Scaler":
-        scaling_technique_import = "from sklearn.preprocessing import StandardScaler"
-        scaling_class = "StandardScaler()"
+            if algorithm == "AdaBoost":
+                algorithm_import = "from sklearn.ensemble import AdaBoostClassifier"
+                algorithm_instance = "abc"
+                algorithm_class = "AdaBoostClassifier()"
 
-    elif scaling == "Min Max Scaler":
-        scaling_technique_import = "from sklearn.preprocessing import MinMaxScaler"
-        scaling_class = "MinMaxScaler()"
+            elif algorithm == "Balanced Random Forest":
+                algorithm_import = "from imblearn.ensemble import BalancedRandomForestClassifier"
+                algorithm_instance = "brfc"
+                algorithm_class = "BalancedRandomForestClassifier()"
 
-    elif scaling == "Max Abs Scaler":
-        scaling_technique_import = "from sklearn.preprocessing import MaxAbsScaler"
-        scaling_class = "MaxAbsScaler()"
+            elif algorithm == "Decision Tree":
+                algorithm_import = "from sklearn import tree"
+                algorithm_instance = "dt"
+                algorithm_class = "tree.DecisionTreeClassifier()"
 
-    elif scaling == "Robust Scaler":
-        scaling_technique_import = "from sklearn.preprocessing import RobustScaler"
-        scaling_class = "RobustScaler()"
+            elif algorithm == "Easy Ensemble":
+                algorithm_import = "from imblearn.ensemble import EasyEnsembleClassifier"
+                algorithm_instance = "eec"
+                algorithm_class = "EasyEnsembleClassifier()"
 
-    elif scaling == "Normalizer":
-        scaling_technique_import = "from sklearn.preprocessing import Normalizer"
-        scaling_class = "Normalizer()"
+            elif algorithm == "Gaussian Naïve Bayes":
+                algorithm_import = "from sklearn.naive_bayes import GaussianNB"
+                algorithm_instance = "gnb"
+                algorithm_class = "GaussianNB()"
 
-    elif scaling == "Quantile Transformer":
-        scaling_technique_import = "from sklearn.preprocessing import QuantileTransformer"
-        scaling_class = "QuantileTransformer()"
+            elif algorithm == "Gradient Boosting":
+                algorithm_import = "from sklearn.ensemble import GradientBoostingClassifier"
+                algorithm_instance = "gbc"
+                algorithm_class = "GradientBoostingClassifier()"
 
-    elif scaling == "Power Transformer":
-        scaling_technique_import = "from sklearn.preprocessing import PowerTransformer"
-        scaling_class = "PowerTransformer()"
+            elif algorithm == "K-Nearest Neighbors":
+                algorithm_import = "from sklearn.neighbors import KNeighborsClassifier"
+                algorithm_instance = "knn"
+                algorithm_class = "KNeighborsClassifier()"
 
+            elif algorithm == "Logistic Regression":
+                algorithm_import = "from sklearn.linear_model import LogisticRegression"
+                algorithm_instance = "lr"
+                algorithm_class = "LogisticRegression()"
+
+            elif algorithm == "Random Forest":
+                algorithm_import = "from sklearn.ensemble import RandomForestClassifier"
+                algorithm_instance = "rfc"
+                algorithm_class = "RandomForestClassifier()"
+
+            elif algorithm == "Support Vector":
+                algorithm_import = "from sklearn.svm import SVC"
+                algorithm_instance = "svm"
+                algorithm_class = "SVC()"
+
+            elif algorithm == "Stochastic Gradient Descent":
+                algorithm_import = "from sklearn.linear_model import SGDClassifier"
+                algorithm_instance = "sgdc"
+                algorithm_class = "SGDClassifier()"
+
+        if task_type == "Regression":
+            algorithm = st.selectbox("**:blue[Select an algorithm]**", ["Linear Regression", "Ridge", "Lasso", "Elastic Net", "Random Forest Regressor", "Gradient Boosting Regressor", "Support Vector Regressor"])
+
+            if algorithm == "Linear Regression":
+                algorithm_import = "from sklearn.linear_model import LinearRegression"
+                algorithm_instance = "lr"
+                algorithm_class = "LinearRegression()"
+
+            elif algorithm == "Ridge":
+                algorithm_import = "from sklearn.linear_model import Ridge"
+                algorithm_instance = "ridge"
+                algorithm_class = "Ridge()"
+
+            elif algorithm == "Lasso":
+                algorithm_import = "from sklearn.linear_model import Lasso"
+                algorithm_instance = "lasso"
+                algorithm_class = "Lasso()"
+
+            elif algorithm == "Elastic Net":
+                algorithm_import = "from sklearn.linear_model import ElasticNet"
+                algorithm_instance = "en"
+                algorithm_class = "ElasticNet()"
+
+            elif algorithm == "Random Forest Regressor":
+                algorithm_import = "from sklearn.ensemble import RandomForestRegressor"
+                algorithm_instance = "rfr"
+                algorithm_class = "RandomForestRegressor()"
+
+            elif algorithm == "Gradient Boosting Regressor":
+                algorithm_import = "from sklearn.ensemble import GradientBoostingRegressor"
+                algorithm_instance = "gbr"
+                algorithm_class = "GradientBoostingRegressor()"
+
+            elif algorithm == "Support Vector Regressor":
+                algorithm_import = "from sklearn.svm import SVR"
+                algorithm_instance = "svr"
+                algorithm_class = "SVR()"
+    
+        train_test_ratio = st.number_input("**:blue[Percentage of the training set]**", 0, max_value=99, value=70)
     #--------------------------------------------------------------------
-    st.divider()    
-    feature_selection = st.selectbox("**Select a feature selection technique**", ["None", "SelectKBest", "Recursive Feature Elimination", "Feature Importance", "PCA"])
+    with st.container(border=True):
+        
+        resampling_method = st.selectbox("**:blue[Select a resampling method]**", ["None", "Random Oversampler", "SMOTE", "ADASYN", "Random Undersampler", "Tomek Links"])
 
+        scaling = st.selectbox("**:blue[Select a scaling algorithm]**", ["Max Abs Scaler", "Min Max Scaler", "Normalizer", "Power Transformer", "Quantile Transformer", "Robust Scaler", "Standard Scaler"])
+
+        if scaling == "Standard Scaler":
+            scaling_technique_import = "from sklearn.preprocessing import StandardScaler"
+            scaling_class = "StandardScaler()"
+
+        elif scaling == "Min Max Scaler":
+            scaling_technique_import = "from sklearn.preprocessing import MinMaxScaler"
+            scaling_class = "MinMaxScaler()"
+
+        elif scaling == "Max Abs Scaler":
+            scaling_technique_import = "from sklearn.preprocessing import MaxAbsScaler"
+            scaling_class = "MaxAbsScaler()"
+
+        elif scaling == "Robust Scaler":
+            scaling_technique_import = "from sklearn.preprocessing import RobustScaler"
+            scaling_class = "RobustScaler()"
+
+        elif scaling == "Normalizer":
+            scaling_technique_import = "from sklearn.preprocessing import Normalizer"
+            scaling_class = "Normalizer()"
+
+        elif scaling == "Quantile Transformer":
+            scaling_technique_import = "from sklearn.preprocessing import QuantileTransformer"
+            scaling_class = "QuantileTransformer()"
+
+        elif scaling == "Power Transformer":
+            scaling_technique_import = "from sklearn.preprocessing import PowerTransformer"
+            scaling_class = "PowerTransformer()"
+    #--------------------------------------------------------------------
+    with st.container(border=True):
+           
+        feature_selection = st.selectbox("**:blue[Select a feature selection technique]**", ["None", "SelectKBest", "Recursive Feature Elimination", "Feature Importance", "PCA"])
     #--------------------------------------------------------------------
     include_cv = st.checkbox("**Include Cross-Validation**", value=True)
     include_hp = st.checkbox("**Include Hyperparameter Tuning**", value=True)
     
-    #--------------------------------------------------------------------
     
 with col2:
-    st.subheader("Code:", divider='blue')
+    st.markdown('<div class="centered-info"><span style="margin-left: 10px;">Code</span></div>',unsafe_allow_html=True,)
 
     code = (
         "# Import libraries and dependencies\n"
