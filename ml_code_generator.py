@@ -23,7 +23,7 @@ from io import BytesIO
 #---------------------------------------------------------------------------------------------------------------------------------
 ### Title and description for your Streamlit app
 #---------------------------------------------------------------------------------------------------------------------------------
-st.set_page_config(page_title="ML Code Generator | v0.2",
+st.set_page_config(page_title="ML Code Generator | v0.3",
                    layout="wide",
                    page_icon="💻",            
                    initial_sidebar_state="collapsed")
@@ -48,7 +48,7 @@ st.markdown(
     }
     </style>
     <div class="title-large">Machine Learning (ML) Code Generator</div>
-    <div class="title-small">Play with Code | v0.2</div>
+    <div class="title-small">Play with Code | v0.3</div>
     """,
     unsafe_allow_html=True
 )
