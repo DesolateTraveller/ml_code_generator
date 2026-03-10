@@ -516,13 +516,7 @@ with col1:
                             timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
                             filename = f"ml_pipeline_{task_type.lower()}_{timestamp}.py"
                             
-                            st.download_button(
-                                label="📥 Download Code as .py File",
-                                data=st.session_state.generated_code,
-                                file_name=filename,
-                                mime="text/x-python",
-                                use_container_width=True,
-                                type="primary")
+                            st.download_button(label="📥 Download Code as .py File",data=st.session_state.generated_code,file_name=filename,mime="text/x-python",use_container_width=True,type="primary")
 
             else:
                 st.error("Please run the 'Generate Code' Button.")
